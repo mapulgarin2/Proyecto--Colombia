@@ -31,6 +31,12 @@ export class Usuarios extends Entity {
     type: 'string',
     required: true,
   })
+  telefono: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
   password: string;
 
 

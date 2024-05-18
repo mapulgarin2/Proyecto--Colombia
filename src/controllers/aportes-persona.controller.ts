@@ -36,3 +36,4 @@ export class AportesPersonaController {
     return this.aportesRepository.comentarioFK(id);
   }
 }
+

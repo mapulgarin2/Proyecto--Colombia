@@ -55,8 +55,11 @@
     "@loopback/rest": "^14.0.1",
     "@loopback/rest-explorer": "^7.0.1",
     "@loopback/service-proxy": "^7.0.1",
+    "axios": "^1.6.8",
+    "crypto-js": "^4.2.0",
     "loopback-connector-mongodb": "^7.0.0-alpha.1",
     "loopback-connector-mysql": "^7.0.9",
+    "password-generator": "^2.3.2",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
