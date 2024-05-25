@@ -1,4 +1,7 @@
 import {service} from '@loopback/core';
+import {Credenciales} from '../models';
+import { HttpErrors} from '@loopback/rest';
+
 import {
   Count,
   CountSchema,
@@ -22,6 +25,8 @@ import axios from 'axios';
 import {Usuarios} from '../models';
 import {UsuariosRepository} from '../repositories';
 import {AuthService} from '../services';
+import {authenticate} from '@loopback/authentication';
+@authenticate("admin")
 
 export class UsuariosController {
   constructor(
@@ -55,15 +60,15 @@ export class UsuariosController {
     const p = await this.usuariosRepository.create(usuarios);
 
     // Notificamos al usuario por correo
-    // let destino = usuarios.correo;
+    let destino = usuarios.correo;
 // Notifiamos al usuario por telefono y cambiar la url por send_sms
-    let destino = usuarios.telefono;
+    // let destino = usuarios.telefono;
 
     const asunto = 'Registro de usuario en plataforma';
     const contenido = `Hola, ${usuarios.nombre} ${usuarios.apellidos} su contraseña en el portal es: ${clave}`
     axios({
       method: 'post',
-      url: 'http://localhost:5000/send_sms', //Si quiero enviar por mensaje cambiar a send_sms
+      url: 'http://localhost:5000/send_email', //Si quiero enviar por mensaje cambiar a send_sms
 
       headers: {
         'Accept': 'application/json',
@@ -84,6 +89,7 @@ export class UsuariosController {
     return p;
 
   }
+
 
   @get('/usuarios/count')
   @response(200, {
@@ -185,4 +191,35 @@ export class UsuariosController {
   async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.usuariosRepository.deleteById(id);
   }
+  //Servicio de login
+  @authenticate.skip()
+  @post('/login', {
+    responses: {
+      '200': {
+        description: 'Identificación de usuarios'
+      }
+    }
+  })
+  async login(
+    @requestBody() credenciales: Credenciales
+  ) {
+    let p = await this.servicioAuth.identificarPersona(credenciales.usuario, credenciales.password);
+    if (p) {
+      let token = this.servicioAuth.generarTokenJWT(p);
+
+      return {
+        status: "success",
+        data: {
+          nombre: p.nombre,
+          apellidos: p.apellidos,
+          correo: p.correo,
+          id: p.id
+        },
+        token: token
+      }
+    } else {
+      throw new HttpErrors[401]("Datos invalidos")
+    }
+  }
+
 }

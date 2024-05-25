@@ -20,6 +20,7 @@ import {
 import {Aportes} from '../models';
 import {AportesRepository} from '../repositories';
 
+
 export class AportesController {
   constructor(
     @repository(AportesRepository)

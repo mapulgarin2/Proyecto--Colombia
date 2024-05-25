@@ -9,6 +9,9 @@ import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
+import {AuthenticationComponent, registerAuthenticationStrategy} from '@loopback/authentication';
+import {AdministradorStrategy} from './strategies/admin.strategy';
+
 
 export {ApplicationConfig};
 
@@ -40,5 +43,7 @@ export class ProyectoColombiaApplication extends BootMixin(
         nested: true,
       },
     };
+    registerAuthenticationStrategy(this, AdministradorStrategy);
+  this.component(AuthenticationComponent);
   }
 }

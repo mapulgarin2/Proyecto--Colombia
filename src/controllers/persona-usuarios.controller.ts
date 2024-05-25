@@ -12,6 +12,7 @@ import {
 } from '../models';
 import {PersonaRepository} from '../repositories';
 
+
 export class PersonaUsuariosController {
   constructor(
     @repository(PersonaRepository)

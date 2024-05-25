@@ -20,6 +20,7 @@ import {
 import {Persona} from '../models';
 import {PersonaRepository} from '../repositories';
 
+
 export class PersonaController {
   constructor(
     @repository(PersonaRepository)

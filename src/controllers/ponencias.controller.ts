@@ -20,6 +20,7 @@ import {
 import {Ponencias} from '../models';
 import {PonenciasRepository} from '../repositories';
 
+
 export class PonenciasController {
   constructor(
     @repository(PonenciasRepository)
